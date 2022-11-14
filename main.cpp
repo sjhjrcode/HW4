@@ -76,7 +76,7 @@ public:
     BSTNode() {
         left = right = 0;
     }
-    BSTNode(const T& e, BSTNode<T> *l = 0, BSTNode<T> *r = 0) {
+    explicit BSTNode(const T& e, BSTNode<T> *l = nullptr, BSTNode<T> *r = nullptr) {
         el = e; left = l; right = r;
     }
     T el;
@@ -87,14 +87,14 @@ template<class T>
 class BST {
 public:
     BST() {
-        root = 0;
+        root = nullptr;
     }
     ~BST() {
         clear();
     }
     void clear() {
         clear(root);
-        root = 0;
+        root = nullptr;
     }
     bool isEmpty() const {
         return root == 0;
@@ -147,7 +147,7 @@ protected:
 
 template<class T>
 void BST<T>::clear(BSTNode<T> *p) {
-    if (p != 0) {
+    if (p != nullptr) {
         clear(p->left);
         clear(p->right);
         delete p;
@@ -158,14 +158,14 @@ void BST<T>::clear(BSTNode<T> *p) {
 
 template<class T>
 void BST<T>::insert(const T& el) {
-    BSTNode<T> *p = root, *prev = 0;
-    while (p != 0) {  // find a place for inserting new node;
+    BSTNode<T> *p = root, *prev = nullptr;
+    while (p != nullptr) {  // find a place for inserting new node;
         prev = p;
         if (el < p->el)
             p = p->left;
         else p = p->right;
     }
-    if (root == 0)    // tree is empty;
+    if (root == nullptr)    // tree is empty;
         root = new BSTNode<T>(el);
     else if (el < prev->el)
         prev->left  = new BSTNode<T>(el);
@@ -183,13 +183,13 @@ void BST<T>::recursiveInsert(BSTNode<T>*& p, const T& el) {
 
 template<class T>
 T* BST<T>::search(BSTNode<T>* p, const T& el) const {
-    while (p != 0)
+    while (p != nullptr)
         if (el == p->el)
             return &p->el;
         else if (el < p->el)
             p = p->left;
         else p = p->right;
-    return 0;
+    return nullptr;
 }
 
 template<class T>
@@ -208,14 +208,14 @@ template<class T>
 void BST<T>::iterativePreorder() {
     Stack<BSTNode<T>*> travStack;
     BSTNode<T> *p = root;
-    if (p != 0) {
+    if (p != nullptr) {
         travStack.push(p);
         while (!travStack.empty()) {
             p = travStack.pop();
             visit(p);
-            if (p->right != 0)
+            if (p->right != nullptr)
                 travStack.push(p->right);
-            if (p->left != 0)             // left child pushed after right
+            if (p->left != nullptr)             // left child pushed after right
                 travStack.push(p->left); // to be on the top of the stack;
         }
     }
@@ -225,22 +225,22 @@ template<class T>
 void BST<T>::iterativeInorder() {
     Stack<BSTNode<T>*> travStack;
     BSTNode<T> *p = root;
-    while (p != 0) {
-        while (p != 0) {                 // stack the right child (if any)
+    while (p != nullptr) {
+        while (p != nullptr) {                 // stack the right child (if any)
             if (p->right)                // and the node itself when going
                 travStack.push(p->right); // to the left;
             travStack.push(p);
             p = p->left;
         }
         p = travStack.pop();             // pop a node with no left child
-        while (!travStack.empty() && p->right == 0) { // visit it and all nodes
+        while (!travStack.empty() && p->right == nullptr) { // visit it and all nodes
             visit(p);                                 // with no right child;
             p = travStack.pop();
         }
         visit(p);                        // visit also the first node with
         if (!travStack.empty())          // a right child (if any);
             p = travStack.pop();
-        else p = 0;
+        else p = nullptr;
     }
 }
 
@@ -248,10 +248,10 @@ template<class T>
 void BST<T>::iterativePostorder() {
     Stack<BSTNode<T>*> travStack;
     BSTNode<T>* p = root, *q = root;
-    while (p != 0) {
-        for ( ; p->left != 0; p = p->left)
+    while (p != nullptr) {
+        for ( ; p->left != nullptr; p = p->left)
             travStack.push(p);
-        while (p->right == 0 || p->right == q) {
+        while (p->right == nullptr || p->right == q) {
             visit(p);
             q = p;
             if (travStack.empty())
@@ -269,14 +269,14 @@ template<class T>
 void BST<T>::breadthFirst() {
     Queue<BSTNode<T>*> queue;
     BSTNode<T> *p = root;
-    if (p != 0) {
+    if (p != nullptr) {
         queue.enqueue(p);
         while (!queue.empty()) {
             p = queue.dequeue();
             visit(p);
-            if (p->left != 0)
+            if (p->left != nullptr)
                 queue.enqueue(p->left);
-            if (p->right != 0)
+            if (p->right != nullptr)
                 queue.enqueue(p->right);
         }
     }
@@ -360,10 +360,9 @@ while (!ss.eof()) {
 
 
     if(wordlist.at(0) == "0"){
-        for(int k=1; k<wordlist.size();k++){
-            cout<<stoi(wordlist.at(k))<<" ";
+        for(int k=1; k<wordlist.size();k++)
             Binary_Tree.insert(stoi(wordlist.at(k)));
-        }
+
 
     }
 
