@@ -293,11 +293,55 @@ void BST<T>::balance (T data[], int first, int last) {
     }
 }
 
+template<class T>
+void BST<T>::deleteByCopying(BSTNode<T>*& node) {
+    BSTNode<T> *previous, *tmp = node;
+    if (node->right == 0)                  // node has no right child;
+        node = node->left;
+    else if (node->left == 0)              // node has no left child;
+        node = node->right;
+    else {
+        tmp = node->left;                  // node has both children;
+        previous = node;                  // 1.
+        while (tmp->right != 0) {         // 2.
+            previous = tmp;
+            tmp = tmp->right;
+        }
+        node->el = tmp->el;               // 3.
+        if (previous == node)
+            previous->left  = tmp->left;
+        else previous->right = tmp->left; // 4.
+    }
+    delete tmp;                            // 5.
+}
+
+
+template<class T>
+void BST<T>::findAndDeleteByCopying(const T& el) {
+    BSTNode<T> *p = root, *prev = 0;
+    while (p != 0 && !(p->el == el)) {
+        prev = p;
+        if (el < p->el)
+            p = p->left;
+        else p = p->right;
+    }
+    if (p != 0 && p->el == el)
+        if (p == root)
+            deleteByCopying(root);
+        else if (prev->left == p)
+            deleteByCopying(prev->left);
+        else deleteByCopying(prev->right);
+    else if (root != 0)
+        cout << "el " << el << " is not in the tree\n";
+    else cout << "the tree is empty\n";
+}
+
+
 
 void menu(){
     std::cout.width(20);
-    std::cout<<"MENU"<<std::endl<<std::endl<<"Create (0), Search (1), Breadth-First Traversal (2) \nDepth-First Traversal: preorder (3), inorder (4), postorder (5)"<<std::endl;
-    std::cout<<"Exit Program (6)"<<std::endl<<"Choose?";
+    std::cout<<"MENU"<<std::endl<<std::endl<<"Create (0), Search (1), Breadth-First Traversal (2) \nDepth-First Traversal: preorder (3), inorder (4), postorder (5)\nDelete Node (6)"<<std::endl;
+    std::cout<<"Exit Program (7)"<<std::endl<<"Choose?";
 
 }
 
@@ -332,7 +376,7 @@ while (!ss.eof()) {
         }
     }
     //checks if the first input matches the command number and is a valid input
-    if((wordlist.at(0) == ("1"))&&
+    if((wordlist.at(0) == ("1")||wordlist.at(0)=="6")&&
        wordlist.size()!=2){
         std::cout<<"No input parameter"<<std::endl;
         return key;
@@ -401,6 +445,12 @@ while (!ss.eof()) {
 
     }
     else if(wordlist.at(0) == "6"){
+        Binary_Tree.findAndDeleteByCopying(stoi(wordlist.at(1)));
+
+
+
+    }
+    else if(wordlist.at(0) == "7"){
         key = "exit"; //pass exit code
     }
 

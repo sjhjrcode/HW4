@@ -1,3 +1,0 @@
-C:/Users/sjhjr/Documents/Data Struct/HW4/cmake-build-debug/CMakeFiles/steven_howell_4.dir
-C:/Users/sjhjr/Documents/Data Struct/HW4/cmake-build-debug/CMakeFiles/edit_cache.dir
-C:/Users/sjhjr/Documents/Data Struct/HW4/cmake-build-debug/CMakeFiles/rebuild_cache.dir
